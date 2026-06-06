@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favour Kirema — Software Developer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       CUSTOM CURSOR
+  ═══════════════════════════════════════ -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ═══════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════ -->
+  <nav>
+    <a href="#home" class="nav-logo">FK<span>.</span></a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Journey</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 1 — HERO / HOME
+  ═══════════════════════════════════════ -->
+  <section id="home">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-orb1"></div>
+    <div class="hero-orb2"></div>
+
+    <div class="hero-content">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        Available for opportunities
+      </div>
+
+      <div class="hero-tag">Software Developer</div>
+
+      <h1 class="hero-name">
+        Favour<br /><span class="accent">Kirema</span>
+      </h1>
+
+      <p class="hero-role">
+        Full-Stack Dev
+        <span class="dot">✦</span>
+        Moringa School
+        <span class="dot">✦</span>
+        Nairobi, KE
+      </p>
+
+      <p class="hero-desc">
+        I build elegant, thoughtful digital experiences. A developer with a
+        designer's eye — currently sharpening my craft at Moringa School, one
+        line of code at a time.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#projects" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2 — ABOUT
+  ═══════════════════════════════════════ -->
+  <section id="about">
+    <div class="about-grid">
+
+      <!-- Avatar / Photo placeholder -->
+      <div class="about-avatar-wrap reveal">
+        <div class="avatar-box"></div>
+        <div class="avatar-box-outline"></div>
+      </div>
+
+      <!-- Text column -->
+      <div class="about-text">
+        <div class="section-label">Who I Am</div>
+        <h2 class="section-title">Crafting code with <em>intention</em></h2>
+
+        <p>
+          Hey! I'm Favour — a software developer in the making, studying at
+          Moringa School in Nairobi. I believe great code is like great writing:
+          clear, intentional, and beautiful in its own way.
+        </p>
+        <p>
+          I'm passionate about front-end development, building interfaces that
+          feel as good as they look. When I'm not writing code, I'm probably
+          exploring new design trends or debugging something that was definitely
+          working five minutes ago.
+        </p>
+
+        <!-- Quick-info table -->
+        <div class="about-meta">
+          <div class="meta-row">
+            <span class="meta-label">School</span>
+            <span class="meta-val">Moringa School, Nairobi</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Status</span>
+            <span class="meta-val">Currently Studying</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Location</span>
+            <span class="meta-val">Nairobi, Kenya 🇰🇪</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Focus</span>
+            <span class="meta-val">Web Development &amp; Python</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Email</span>
+            <span class="meta-val">
+              <a href="mailto:kananafavour5@gmail.com">kananafavour5@gmail.com</a>
+            </span>
+          </div>
+        </div>
+
+        <!-- Skill bars -->
+        <div class="skills-section reveal">
+          <div class="section-label">Technical Skills</div>
+
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">HTML &amp; CSS</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-width="0.85"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">JavaScript</span>
+              <span class="skill-pct">65%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-width="0.65"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">React</span>
+              <span class="skill-pct">63%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-width="0.63"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">Python</span>
+              <span class="skill-pct">Learning ✦</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" data-width="0.35"></div>
+            </div>
+          </div>
+
+          <!-- Tool tags -->
+          <div class="skill-tags">
+            <span class="tag">Git</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Figma</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">Responsive Design</span>
+            <span class="tag">CLI</span>
+            <span class="tag">Agile</span>
+          </div>
+        </div>
+      </div><!-- /about-text -->
+    </div><!-- /about-grid -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3 — PROJECTS
+  ═══════════════════════════════════════ -->
+  <section id="projects">
+    <div class="projects-header reveal">
+      <div>
+        <div class="section-label">My Work</div>
+        <h2 class="section-title">School <em>Projects</em></h2>
+      </div>
+      <a href="https://github.com/" target="_blank" class="btn-ghost">
+        View All on GitHub
+      </a>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 01 -->
+      <div class="project-card reveal">
+        <div class="project-num">01 / Project</div>
+        <div class="project-icon">🌐</div>
+        <h3 class="project-title">Personal Blog Platform</h3>
+        <p class="project-desc">
+          A fully responsive blog platform built with HTML, CSS, and vanilla
+          JavaScript. Features dynamic content rendering, a custom dark/light
+          mode toggle, and clean semantic markup.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">HTML</span>
+          <span class="tech-tag">CSS</span>
+          <span class="tech-tag">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo <span>→</span></a>
+          <a href="https://github.com/" target="_blank" class="project-link github">
+            GitHub <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 02 -->
+      <div class="project-card reveal">
+        <div class="project-num">02 / Project</div>
+        <div class="project-icon">🛒</div>
+        <h3 class="project-title">E-Commerce UI</h3>
+        <p class="project-desc">
+          A pixel-perfect product listing page with cart functionality, search
+          filtering, and smooth animations. Built during Moringa's front-end
+          module with a focus on UX and accessibility.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">HTML</span>
+          <span class="tech-tag">CSS</span>
+          <span class="tech-tag">JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo <span>→</span></a>
+          <a href="https://github.com/" target="_blank" class="project-link github">
+            GitHub <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 03 -->
+      <div class="project-card reveal">
+        <div class="project-num">03 / Project</div>
+        <div class="project-icon">⚛️</div>
+        <h3 class="project-title">Task Manager App</h3>
+        <p class="project-desc">
+          A React-based task management application with drag-and-drop, priority
+          sorting, and local state management using hooks. Clean UI with
+          responsive design across all devices.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">Hooks</span>
+          <span class="tech-tag">CSS Modules</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo <span>→</span></a>
+          <a href="https://github.com/" target="_blank" class="project-link github">
+            GitHub <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 04 -->
+      <div class="project-card reveal">
+        <div class="project-num">04 / Project</div>
+        <div class="project-icon">🎨</div>
+        <h3 class="project-title">Creative Portfolio Template</h3>
+        <p class="project-desc">
+          A showcase portfolio template for creatives — built with pure HTML
+          and CSS. Includes scroll animations, a sticky navigation, and a fully
+          responsive grid layout system.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">HTML</span>
+          <span class="tech-tag">Advanced CSS</span>
+          <span class="tech-tag">Animations</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo <span>→</span></a>
+          <a href="https://github.com/" target="_blank" class="project-link github">
+            GitHub <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 05 -->
+      <div class="project-card reveal">
+        <div class="project-num">05 / Project</div>
+        <div class="project-icon">🌦️</div>
+        <h3 class="project-title">Weather Dashboard</h3>
+        <p class="project-desc">
+          Consuming a public weather API to display real-time weather data.
+          Features a clean UI, city search, animated weather icons, and unit
+          conversion between Celsius and Fahrenheit.
+        </p>
+        <div class="project-tech">
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">REST API</span>
+          <span class="tech-tag">Fetch API</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">Live Demo <span>→</span></a>
+          <a href="https://github.com/" target="_blank" class="project-link github">
+            GitHub <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Coming soon card -->
+      <div class="project-card reveal project-coming-soon">
+        <div style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.4;">✦</div>
+        <p class="coming-soon-label">More coming soon</p>
+        <p class="coming-soon-text">
+          New projects being built at Moringa School. Stay tuned.
+        </p>
+      </div>
+
+    </div><!-- /projects-grid -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 4 — EXPERIENCE / JOURNEY
+  ═══════════════════════════════════════ -->
+  <section id="experience">
+    <div class="section-label reveal">My Journey</div>
+    <h2 class="section-title reveal">The <em>path</em> so far</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2024–<br />Present</div>
+        <div class="timeline-content">
+          <div class="timeline-role">Software Development Student</div>
+          <div class="timeline-place">✦ Moringa School, Nairobi</div>
+          <p class="timeline-desc">
+            Enrolled in Moringa School's intensive software development programme.
+            Learning full-stack development covering HTML, CSS, JavaScript, React,
+            and Python. Building real-world projects and collaborating in agile teams.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-content">
+          <div class="timeline-role">Self-Taught Front-End Developer</div>
+          <div class="timeline-place">✦ Independent Learning</div>
+          <p class="timeline-desc">
+            Discovered a passion for web development through self-study. Mastered
+            HTML and CSS fundamentals, started exploring JavaScript, and fell in
+            love with the idea of building things that people can use and interact with.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-year">Now</div>
+        <div class="timeline-content">
+          <div class="timeline-role">Currently Learning Python</div>
+          <div class="timeline-place">✦ Moringa School Curriculum</div>
+          <p class="timeline-desc">
+            Expanding into Python — exploring data structures, algorithms, and
+            back-end development. Every day brings a new concept and a new breakthrough.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 5 — SERVICES
+  ═══════════════════════════════════════ -->
+  <section id="services">
+    <div class="section-label reveal">What I Offer</div>
+    <h2 class="section-title reveal">How I can <em>help</em> you</h2>
+
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-icon">🎨</div>
+        <h3 class="service-title">UI/UX Design &amp; Build</h3>
+        <p class="service-desc">
+          Translating wireframes and ideas into clean, responsive HTML/CSS
+          interfaces. I care deeply about how things look and how they feel to use.
+        </p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">⚡</div>
+        <h3 class="service-title">Front-End Development</h3>
+        <p class="service-desc">
+          Building interactive, dynamic web experiences with JavaScript and React.
+          Responsive across all screen sizes, accessible to all users.
+        </p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">📱</div>
+        <h3 class="service-title">Responsive Web Design</h3>
+        <p class="service-desc">
+          Every project I build is mobile-first. I ensure your site works
+          beautifully whether opened on a phone, tablet, or desktop.
+        </p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon">🔗</div>
+        <h3 class="service-title">API Integration</h3>
+        <p class="service-desc">
+          Connecting front-ends to real data using REST APIs. Fetch, display, and
+          manage dynamic content that brings your site to life.
+        </p>
+      </div>
+
+    </div><!-- /services-grid -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 6 — CONTACT
+  ═══════════════════════════════════════ -->
+  <section id="contact">
+    <div class="contact-layout">
+
+      <!-- Left: Info -->
+      <div class="contact-info reveal">
+        <div class="section-label">Say Hello</div>
+        <h2 class="section-title">Let's <em>connect</em></h2>
+
+        <p class="contact-intro">
+          Whether you have a project in mind, want to collaborate, or just want
+          to say hi — my inbox is always open. I'd love to hear from you.
+        </p>
+
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div class="contact-detail">
+            <div class="contact-label">Email</div>
+            <div class="contact-val">
+              <a href="mailto:kananafavour5@gmail.com">kananafavour5@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail">
+            <div class="contact-label">Location</div>
+            <div class="contact-val">Nairobi, Kenya</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-detail">
+            <div class="contact-label">Response Time</div>
+            <div class="contact-val">Usually within 24 hours</div>
+          </div>
+        </div>
+
+        <div class="socials">
+          <a href="https://github.com/" target="_blank" class="social-btn" title="GitHub">GH</a>
+          <a href="https://linkedin.com/" target="_blank" class="social-btn" title="LinkedIn">LI</a>
+          <a href="https://twitter.com/" target="_blank" class="social-btn" title="X / Twitter">𝕏</a>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form reveal">
+        <div class="form-group">
+          <label class="form-label" for="name">Your Name</label>
+          <input class="form-input" type="text" id="name" placeholder="Jane Doe" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" type="email" id="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="subject">Subject</label>
+          <input class="form-input" type="text" id="subject" placeholder="Let's work together" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">Message</label>
+          <textarea
+            class="form-textarea"
+            id="message"
+            placeholder="Tell me about your project or idea..."
+          ></textarea>
+        </div>
+        <button class="form-submit" id="sendBtn">
+          <span>Send Message ✦</span>
+        </button>
+        <p class="form-note" id="formNote"></p>
+      </div>
+
+    </div><!-- /contact-layout -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer>
+    <div class="footer-copy">
+      &copy; 2024 <span>Favour Kirema</span>. Designed &amp; built with ♥ in Nairobi.
+    </div>
+    <a href="#home" class="footer-back">Back to top ↑</a>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
