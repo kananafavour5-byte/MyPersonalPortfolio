@@ -273,3 +273,113 @@ document.querySelectorAll('.projects-grid, .services-grid').forEach((grid) => {
   });
   gridObserver.observe(grid);
 });
+
+
+/* ─────────────────────────────────────────────────────────
+   PROJECT PREVIEW MODAL
+   Opens an iframe preview when "Live Preview" is clicked.
+   Falls back gracefully if the site blocks iframes (X-Frame-Options).
+───────────────────────────────────────────────────────── */
+
+const modalOverlay = document.getElementById('modalOverlay');
+const modalIframe  = document.getElementById('modalIframe');
+const modalTitle   = document.getElementById('modalTitle');
+const modalLabel   = document.getElementById('modalLabel');
+const modalExternal = document.getElementById('modalExternal');
+const modalLoading = document.getElementById('modalLoading');
+const modalClose   = document.getElementById('modalClose');
+
+// Open modal with the project's URL and title
+function openModal(url, title) {
+  modalTitle.textContent    = title;
+  modalLabel.textContent    = 'Live Preview';
+  modalExternal.href        = url;
+  modalLoading.classList.remove('hidden');
+
+  // Remove any old blocked message
+  const old = modalIframe.parentNode.querySelector('.modal-blocked');
+  if (old) old.remove();
+
+  // Load the URL in the iframe
+  modalIframe.src = url;
+
+  // Show the modal
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden'; // prevent background scroll
+
+  // Hide the loading dots once the iframe finishes loading
+  modalIframe.onload = () => {
+    modalLoading.classList.add('hidden');
+  };
+
+  // Some sites (GitHub, some Vercel apps) block iframes via X-Frame-Options.
+  // We can't detect this directly in JS, so we show a fallback after a timeout
+  // if the iframe appears to still be blank after 8 seconds.
+  setTimeout(() => {
+    try {
+      // If iframe loaded same-origin content, contentDocument is accessible
+      // For cross-origin blocked pages, we catch the error and show fallback
+      const doc = modalIframe.contentDocument;
+      if (!doc || doc.body.innerHTML === '') showBlockedMessage(url);
+    } catch (e) {
+      // Cross-origin but not necessarily blocked — this is normal, do nothing
+    }
+  }, 8000);
+}
+
+// Show a fallback message when the site blocks iframes
+function showBlockedMessage(url) {
+  modalLoading.classList.add('hidden');
+
+  const blocked = document.createElement('div');
+  blocked.className = 'modal-blocked visible';
+  blocked.innerHTML = `
+    <p style="font-size:2rem">🔒</p>
+    <p>This site doesn't allow embedded previews.<br/>
+    You can still view it directly.</p>
+    <a href="${url}" target="_blank">Open project in new tab ↗</a>
+  `;
+  modalIframe.parentNode.appendChild(blocked);
+}
+
+// Close modal
+function closeModal() {
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  // Small delay before clearing src so the close animation plays first
+  setTimeout(() => { modalIframe.src = ''; }, 300);
+}
+
+// Close button
+modalClose.addEventListener('click', closeModal);
+
+// Click outside the modal box to close
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+// Press Escape to close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Hook up all "Live Preview" buttons on project cards
+document.querySelectorAll('.preview-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.project-card');
+    const url = card.dataset.url;
+    const title = card.dataset.title;
+
+    if (!url || url === '#') {
+      alert('No live URL added yet for this project.');
+      return;
+    }
+
+    if (url.includes('faxel-interiors.vercel.app')) {
+      window.open(url, '_blank');
+      return;
+    }
+
+    openModal(url, title);
+  });
+});

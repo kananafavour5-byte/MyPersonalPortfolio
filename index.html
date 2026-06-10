@@ -247,7 +247,9 @@
       </div>
 
       <!-- Project 02 -->
-      <div class="project-card reveal">
+      <div class="project-card reveal"
+           data-url="https://perfume-shop-app.vercel.app/"
+           data-title="Favour Scents Perfume Shop">
   <div class="project-num">01 / Project</div>
   <div class="project-icon">🌸</div>
 
@@ -283,7 +285,9 @@
 </div>
 
       <!-- Project 03 -->
-<div class="project-card reveal">
+<div class="project-card reveal"
+     data-url="https://faxel-interiors.vercel.app/"
+     data-title="Faxel Interiors">
   <div class="project-num">02 / Project</div>
   <div class="project-icon">🏠</div>
 
@@ -303,11 +307,8 @@
   </div>
 
   <div class="project-links">
-    <a href="https://faxel-interiors.vercel.app"
-       target="_blank"
-       class="project-link">
-      Live Demo <span>→</span>
-    </a>
+    
+    <button class="project-link preview-btn">Live Preview <span>→</span></button>
 
     <a href="https://github.com/kananafavour5-byte/faxel-interiors"
        target="_blank"
@@ -318,7 +319,10 @@
 </div>
 
       <!-- Project 04 -->
-      <div class="project-card reveal">
+      <div class="project-card reveal"
+           data-url="https://wordly-spa.vercel.app/"
+           data-title="Wordly Dictionary SPA">
+           
   <div class="project-num">03 / Project</div>
   <div class="project-icon">📚</div>
 
@@ -554,6 +558,41 @@
     </div>
     <a href="#home" class="footer-back">Back to top ↑</a>
   </footer>
+
+
+<!-- ═══════════════════════════════════════
+     PROJECT PREVIEW MODAL
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <span class="modal-label" id="modalLabel"></span>
+        <h3 class="modal-title" id="modalTitle"></h3>
+      </div>
+      <div class="modal-actions">
+        <a href="#" target="_blank" class="modal-external" id="modalExternal">
+          Open in new tab ↗
+        </a>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+    </div>
+    <div class="modal-frame-wrap">
+      <div class="modal-loading" id="modalLoading">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <iframe
+        id="modalIframe"
+        src=""
+        frameborder="0"
+        allowfullscreen
+        title="Project Preview"
+      ></iframe>
+    </div>
+  </div>
+</div>
 
   <!-- JavaScript -->
   <script src="script.js"></script>
