@@ -209,31 +209,54 @@ sendBtn.addEventListener('click', () => {
   const subject = fieldValue('subject');
   const message = fieldValue('message');
 
-  // ── Validation ──
+  // Validation
   if (!name || !email || !subject || !message) {
-    formNote.style.color  = 'var(--rose)';
-    formNote.textContent  = '✗ Please fill in all fields before sending.';
+    formNote.style.color = 'var(--rose)';
+    formNote.textContent = '✗ Please fill in all fields before sending.';
     return;
   }
 
   if (!isValidEmail(email)) {
-    formNote.style.color  = 'var(--rose)';
-    formNote.textContent  = '✗ Please enter a valid email address.';
+    formNote.style.color = 'var(--rose)';
+    formNote.textContent = '✗ Please enter a valid email address.';
     return;
   }
 
-  // ── Success state ──
-  // In production: replace this block with your API call / EmailJS send
-  formNote.style.color = 'var(--cyan)';
-  formNote.textContent = '✓ Message sent! I\'ll be in touch soon.';
-  clearForm();
+  // Show sending state
+  sendBtn.disabled = true;
+  sendBtn.querySelector('span').textContent = 'Sending...';
+  formNote.textContent = '';
 
-  // Clear the note after 6 seconds
-  setTimeout(() => {
-    formNote.textContent = '';
-  }, 6000);
+  // Send via EmailJS
+emailjs.send(
+  'service_u26li78',
+  'template_cnpz2ur',
+{
+  name: name,
+  email: email,
+  subject: subject,
+  message: message,
+}
+  )
+  .then(() => {
+    // Success
+    formNote.style.color = 'var(--cyan)';
+    formNote.textContent = '✓ Message sent! I\'ll be in touch soon.';
+    sendBtn.querySelector('span').textContent = 'Send Message ✦';
+    sendBtn.disabled = false;
+    clearForm();
+    setTimeout(() => { formNote.textContent = ''; }, 6000);
+  })
+  .catch((error) => {
+    // Error
+    formNote.style.color = 'var(--rose)';
+    formNote.textContent = '✗ Something went wrong. Please email me directly.';
+    sendBtn.querySelector('span').textContent = 'Send Message ✦';
+    sendBtn.disabled = false;
+    console.error('EmailJS error:', error);
+  });
 });
-
+ 
 
 /* ─────────────────────────────────────────────────────────
    6. SMOOTH SECTION TRANSITIONS (optional enhancement)
