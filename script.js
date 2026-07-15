@@ -406,3 +406,34 @@ document.querySelectorAll('.preview-btn').forEach((btn) => {
     openModal(url, title);
   });
 });
+
+/* ─────────────────────────────────────
+   DARK / LIGHT MODE
+───────────────────────────────────── */
+
+const themeToggle = document.getElementById('themeToggle');
+
+// Load saved theme
+const savedTheme = localStorage.getItem('theme');
+
+if (savedTheme === 'light') {
+  document.body.classList.add('light-theme');
+  themeToggle.textContent = '☀️';
+} else {
+  themeToggle.textContent = '🌙';
+}
+
+// Toggle theme
+themeToggle.addEventListener('click', () => {
+
+  document.body.classList.toggle('light-theme');
+
+  if (document.body.classList.contains('light-theme')) {
+    themeToggle.textContent = '☀️';
+    localStorage.setItem('theme', 'light');
+  } else {
+    themeToggle.textContent = '🌙';
+    localStorage.setItem('theme', 'dark');
+  }
+
+});

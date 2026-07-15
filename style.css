@@ -45,6 +45,47 @@
 }
 
 /* ─────────────────────────────────────
+   LIGHT THEME
+───────────────────────────────────── */
+
+body.light-theme {
+
+  /* Backgrounds */
+  --bg:  #f7f3ef;
+  --bg2: #f0e8f2;
+  --bg3: #e4bcfb;
+
+  /* Rose */
+  --rose:       #b03f62;
+  --rose-light: #d06b93;
+  --rose-dim:   #91506b;
+
+  /* Plum */
+  --plum:       #7041b5;
+  --plum-light: #8b68d8;
+  --plum-dim:   #4e2b7b;
+
+  /* Accent */
+  --cyan:       #00897b;
+  --cyan-dim:   #00695c;
+  --gold:       #b8860b;
+  --gold-dim:   #7d5b08;
+
+  /* Text */
+  --text:       #32293d;
+  --text-muted: #55506a;
+  --text-dim:   #8d879c;
+
+  /* Borders */
+  --border: rgba(80, 50, 90, 0.12);
+  --border-plum: rgba(112, 65, 181, 0.20);
+
+  /* Glows */
+  --glow-rose: 0 0 40px rgba(183,79,119,.12);
+  --glow-plum: 0 0 40px rgba(112,65,181,.12);
+}
+
+/* ─────────────────────────────────────
    RESET & BASE
 ───────────────────────────────────── */
 *,
@@ -62,6 +103,7 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
+  transition: background .4s ease, color .4s ease;
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   line-height: 1.7;
@@ -1366,4 +1408,17 @@ footer {
 
 .project-card::before {
   pointer-events: none;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.1);
 }

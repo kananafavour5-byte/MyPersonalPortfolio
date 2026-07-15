@@ -45,6 +45,10 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
 
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+  🌙
+</button>
+
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span>
       <span></span>
@@ -220,7 +224,7 @@
     <div class="projects-header reveal">
       <div>
         <div class="section-label">My Work</div>
-        <h2 class="section-title">School <em>Projects</em></h2>
+        <h2 class="section-title">My <em>Projects</em></h2>
       </div>
       <a href="https://github.com/" target="_blank" class="btn-ghost">
         View All on GitHub
@@ -229,34 +233,54 @@
 
     <div class="projects-grid">
 
-      <!-- Project 01 -->
-      <div class="project-card reveal">
-        <div class="project-num">01 / Project</div>
-        <div class="project-icon">🌐</div>
-        <h3 class="project-title">Personal Blog Platform</h3>
-        <p class="project-desc">
-          A fully responsive blog platform built with HTML, CSS, and vanilla
-          JavaScript. Features dynamic content rendering, a custom dark/light
-          mode toggle, and clean semantic markup.
-        </p>
-        <div class="project-tech">
-          <span class="tech-tag">HTML</span>
-          <span class="tech-tag">CSS</span>
-          <span class="tech-tag">JavaScript</span>
-        </div>
-        <div class="project-links">
-          <a href="#" class="project-link">Live Demo <span>→</span></a>
-          <a href="https://github.com/" target="_blank" class="project-link github">
-            GitHub <span>↗</span>
-          </a>
-        </div>
-      </div>
+<!-- Project 01 -->
+<div class="project-card reveal"
+     data-url="https://isiolo-deliverance-hub.vercel.app/"
+     data-title="Isiolo Deliverance Hub">
+
+  <div class="project-num">01 /Project</div>
+
+  <div class="project-icon">⛪</div>
+
+  <h3 class="project-title">Isiolo Deliverance Hub</h3>
+
+  <p class="project-desc">
+    A modern church website designed to help members stay connected through
+    sermons, ministries, events, announcements, leadership information,
+    and online giving. Built with React and designed to provide a clean,
+    responsive, and engaging user experience.
+  </p>
+
+  <div class="project-tech">
+    <span class="tech-tag">React</span>
+    <span class="tech-tag">JavaScript</span>
+    <span class="tech-tag">CSS</span>
+    <span class="tech-tag">Responsive UI</span>
+  </div>
+
+  <div class="project-links">
+
+    <a href="https://isiolo-deliverance-hub.vercel.app/"
+       target="_blank"
+       class="project-link">
+      Live Demo <span>→</span>
+    </a>
+
+    <a href="YOUR_GITHUB_REPO"
+       target="_blank"
+       class="project-link github">
+      GitHub <span>↗</span>
+    </a>
+
+  </div>
+
+</div>
 
       <!-- Project 02 -->
       <div class="project-card reveal"
            data-url="https://perfume-shop-app.vercel.app/"
            data-title="Favour Scents Perfume Shop">
-  <div class="project-num">01 / Project</div>
+  <div class="project-num">02 / Project</div>
   <div class="project-icon">🌸</div>
 
   <h3 class="project-title">Favour Scents Perfume Shop</h3>
@@ -294,7 +318,7 @@
 <div class="project-card reveal"
      data-url="https://faxel-interiors.vercel.app/"
      data-title="Faxel Interiors">
-  <div class="project-num">02 / Project</div>
+  <div class="project-num">03 / Project</div>
   <div class="project-icon">🏠</div>
 
   <h3 class="project-title">Faxel Interiors</h3>
@@ -329,7 +353,7 @@
            data-url="https://wordly-spa.vercel.app/"
            data-title="Wordly Dictionary SPA">
            
-  <div class="project-num">03 / Project</div>
+  <div class="project-num">04 / Project</div>
   <div class="project-icon">📚</div>
 
   <h3 class="project-title">Wordly Dictionary SPA</h3>
@@ -528,11 +552,11 @@
       <div class="contact-form reveal">
         <div class="form-group">
           <label class="form-label" for="name">Your Name</label>
-          <input class="form-input" type="text" id="name" placeholder="Jane Doe" />
+          <input class="form-input" type="text" id="name" />
         </div>
         <div class="form-group">
           <label class="form-label" for="email">Email Address</label>
-          <input class="form-input" type="email" id="email" placeholder="jane@example.com" />
+          <input class="form-input" type="email" id="email" />
         </div>
         <div class="form-group">
           <label class="form-label" for="subject">Subject</label>
