@@ -50,39 +50,88 @@
 
 body.light-theme {
 
-  /* Backgrounds */
-  --bg:  #f7f3ef;
-  --bg2: #f0e8f2;
-  --bg3: #e4bcfb;
+  /* Backgrounds — Soft Blush base */
+  --bg:  #eeab96;
+  --bg2: #FBE0E0;
+  --bg3: #c17892;
 
-  /* Rose */
-  --rose:       #b03f62;
-  --rose-light: #d06b93;
-  --rose-dim:   #91506b;
+  /* Berry Lipstick as primary rose */
+  --rose:       #9c0f43;
+  --rose-light: #f89bc3;
+  --rose-dim:   #81163d;
 
-  /* Plum */
-  --plum:       #7041b5;
-  --plum-light: #8b68d8;
-  --plum-dim:   #4e2b7b;
+  /* Pink Mist as plum */
+  --plum:       #c4608a;
+  --plum-light: #D5306D;
+  --plum-dim:   #8a3055;
 
-  /* Accent */
-  --cyan:       #00897b;
-  --cyan-dim:   #00695c;
-  --gold:       #b8860b;
-  --gold-dim:   #7d5b08;
+  /* Jasmine as accent */
+  --cyan:     #2d250c;
+  --cyan-dim: #884103;
 
-  /* Text */
-  --text:       #32293d;
-  --text-muted: #55506a;
-  --text-dim:   #8d879c;
+  /* Light Caramel as gold */
+  --gold:     #EEB17D;
+  --gold-dim: #c4885a;
+
+  /* Typography — dark on light */
+  --text:       #2a0a18;
+  --text-muted: #7a3050;
+  --text-dim:   #c4608a;
 
   /* Borders */
-  --border: rgba(80, 50, 90, 0.12);
-  --border-plum: rgba(112, 65, 181, 0.20);
+  --border:      rgba(213, 48, 109, 0.2);
+  --border-plum: rgba(255, 146, 193, 0.3);
 
   /* Glows */
-  --glow-rose: 0 0 40px rgba(183,79,119,.12);
-  --glow-plum: 0 0 40px rgba(112,65,181,.12);
+  --glow-rose: 0 0 40px rgba(213, 48, 109, 0.15);
+  --glow-plum: 0 0 40px rgba(255, 146, 193, 0.1);
+}
+
+/* Light theme — reduce noise overlay opacity */
+body.light-theme::before {
+  opacity: 0.08;
+}
+
+/* Light theme — nav gets a light blur bg */
+body.light-theme nav {
+  background: rgba(193, 131, 155, 0.85);
+}
+
+/* Light theme — skill bar track */
+body.light-theme .skill-bar {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme — form inputs */
+body.light-theme .form-input,
+body.light-theme .form-textarea {
+  color: var(--text);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  box-shadow: var(--glow-rose);
+}
+.theme-toggle:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  transform: scale(1.1);
 }
 
 /* ─────────────────────────────────────
@@ -1437,4 +1486,45 @@ footer {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.hero-wrapper{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+}
+
+.hero-photo{
+    margin-left: auto;
+    padding-right: 3rem;
+}
+
+.hero-photo img{
+    width:360px;
+    height:360px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position: center 40%;
+}
+
+.hero-photo img:hover{
+    transform:scale(1.04);
+}
+@media (max-width:900px){
+
+.hero-wrapper{
+    flex-direction:column-reverse;
+    text-align:center;
+}
+
+.hero-photo img{
+    width:280px;
+    height:280px;
+}
+
+.hero-buttons{
+    justify-content:center;
+}
+
 }
