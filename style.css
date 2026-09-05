@@ -110,29 +110,20 @@ body.light-theme .form-textarea {
 
 /* Theme toggle button */
 .theme-toggle {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg2);
-  color: var(--text-muted);
-  font-size: 1.1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
   cursor: pointer;
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  box-shadow: var(--glow-rose);
+  margin-left: 1.5rem;
+  color: var(--text-muted);
+  transition: transform 0.3s ease, color 0.3s ease;
 }
+
 .theme-toggle:hover {
-  border-color: var(--rose);
   color: var(--rose);
-  transform: scale(1.1);
+  transform: rotate(20deg) scale(1.1);
 }
+
 
 /* ─────────────────────────────────────
    RESET & BASE
@@ -667,64 +658,66 @@ section {
 .meta-val a         { color: var(--cyan); text-decoration: none; }
 .meta-val a:hover   { color: var(--rose); }
 
-/* ── Skill bars ── */
-.skills-section { margin-top: 3rem; }
-
-.skill-item { margin-bottom: 1.2rem; }
-
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.4rem;
-}
-.skill-name {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.skill-pct {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--rose);
+/* ── Technical Skills ── */
+.skills-section {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: 900px;
+  margin: 3rem auto 0;
 }
 
-.skill-bar {
-  height: 2px;
-  background: rgba(255, 255, 255, 0.06);
-  position: relative;
-  overflow: hidden;
-}
-/* JS sets width via data-width attribute; CSS transitions it */
-.skill-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--plum), var(--rose));
-  transition: width 1s cubic-bezier(0.23, 1, 0.32, 1);
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.8rem;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ── Tool / keyword tags ── */
+.skill-group {
+  padding: 1.5rem;
+  border: 1px solid var(--border-plum);
+  background: rgba(107, 63, 160, 0.035);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.skill-group:hover {
+  border-color: var(--plum-light);
+  transform: translateY(-3px);
+}
+
+.skill-group-title {
+  margin: 0 0 1.1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 1.5rem;
 }
+
 .tag {
-  padding: 0.35rem 0.9rem;
+  padding: 0.4rem 0.75rem;
   border: 1px solid var(--border-plum);
   font-family: 'Space Mono', monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--plum-light);
   background: rgba(107, 63, 160, 0.06);
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
+
 .tag:hover {
-  border-color: var(--plum-light);
-  background: rgba(107, 63, 160, 0.15);
+  border-color: var(--rose);
+  color: var(--rose);
+  background: rgba(196, 104, 138, 0.06);
 }
 
 /* ─────────────────────────────────────
@@ -759,19 +752,26 @@ section {
 /* Grid: 1px gaps create a hairline grid-line effect */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5px;
-  background: var(--border);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .project-card {
-  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+
+  background: var(--bg2);
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
-  transition: background 0.4s;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  transition: background 0.4s, border-color 0.4s;
   cursor: pointer;
 }
+
 .project-card::before {
   content: '';
   position: absolute;
@@ -790,8 +790,9 @@ section {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   color: var(--text-dim);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
+
 .project-icon {
   width: 42px;
   height: 42px;
@@ -965,10 +966,8 @@ section {
 /* Grid: hairline borders via background colour + gap */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  margin-top: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
 
 .service-card {
@@ -1459,26 +1458,15 @@ footer {
   pointer-events: none;
 }
 
-.theme-toggle {
-  background: transparent;
-  border: none;
-  font-size: 1.3rem;
-  cursor: pointer;
-  margin-left: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.theme-toggle:hover {
-  transform: rotate(20deg) scale(1.1);
-}
-
 .project-image {
-  width: 180px;
-  height: 95px;
+  width: 100%;
+  height: 180px;
+
   overflow: hidden;
   border-radius: 10px;
-  margin-bottom: 1.5rem;
   border: 1px solid var(--border);
+
+  margin-bottom: 1.5rem;
 }
 
 .project-image img {
@@ -1486,6 +1474,22 @@ footer {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.project-title {
+  grid-area: title;
+}
+
+.project-desc {
+  grid-area: desc;
+}
+
+.project-tech {
+  grid-area: tech;
+}
+
+.project-links {
+  grid-area: links;
 }
 
 .hero-wrapper{
@@ -1580,4 +1584,296 @@ footer {
     bottom: 5.5rem;
     right: 2rem;
   }
+}
+
+/* ═══════════════════════════════════════
+   MAMACARE — FEATURED PROJECT
+   Matches the existing project-card style
+═══════════════════════════════════════ */
+
+#projects .featured-project {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 3rem;
+  align-items: center;
+
+  padding: 2.5rem;
+  margin-bottom: 4rem;
+
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  overflow: hidden;
+}
+
+/* ── Left content ── */
+
+#projects .featured-project-content {
+  min-width: 0;
+}
+
+#projects .featured-project-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 1rem;
+}
+
+#projects .featured-project-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+#projects .featured-project-title em {
+  color: var(--rose);
+  font-style: italic;
+}
+
+#projects .featured-project-lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--text);
+  max-width: 430px;
+  margin-bottom: 1rem;
+}
+
+#projects .featured-project-line {
+  width: 50px;
+  height: 1px;
+  background: var(--rose);
+  margin: 1rem 0 1.25rem;
+}
+
+#projects .featured-project-description {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Buttons ── */
+
+#projects .featured-project-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#projects .featured-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  padding: 0.7rem 1rem;
+
+  border: 1px solid var(--border);
+
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  text-decoration: none;
+  color: var(--rose);
+
+  transition: all 0.3s ease;
+}
+
+#projects .featured-btn:hover {
+  border-color: var(--rose);
+  gap: 0.7rem;
+}
+
+#projects .featured-btn-secondary {
+  color: var(--text-muted);
+}
+
+#projects .featured-btn-secondary:hover {
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════════
+   MAMACARE PRESENTATION
+═══════════════════════════════════════ */
+
+#projects .mamacare-showcase {
+  width: 100%;
+  max-width: 360px;
+  justify-self: end;
+}
+
+#projects .mamacare-frame {
+  width: 100%;
+}
+
+/* Remove the fake browser/header bar.
+   The presentation itself is the preview. */
+#projects .mamacare-frame-top {
+  display: none;
+}
+
+/* The actual presentation window */
+#projects .mamacare-slides {
+  position: relative;
+
+  width: 360px;
+  height: 203px;
+  max-width: 100%;
+
+  overflow: hidden;
+
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Every slide sits in the exact same space */
+#projects .mamacare-slide {
+  display: none;
+
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+/* Only the selected slide appears */
+#projects .mamacare-slide.active {
+  display: block;
+}
+
+/* Keep the entire presentation slide visible */
+#projects .mamacare-slide img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  max-width: none;
+  max-height: none;
+
+  object-fit: contain;
+}
+
+/* ═══════════════════════════════════════
+   THREE DOT NAVIGATION
+═══════════════════════════════════════ */
+
+#projects .mamacare-showcase-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 0.85rem;
+}
+
+/* We are using dots instead of arrows */
+#projects .mamacare-arrow {
+  display: none;
+}
+
+#projects .mamacare-indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+}
+
+/* Small, subtle dots */
+#projects .mamacare-dot {
+  width: 6px;
+  height: 6px;
+
+  padding: 0;
+
+  border: 1px solid var(--text-dim);
+  border-radius: 50%;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+/* Current slide */
+#projects .mamacare-dot.active {
+  background: var(--rose);
+  border-color: var(--rose);
+}
+
+/* ═══════════════════════════════════════
+   TABLET / MOBILE
+═══════════════════════════════════════ */
+
+@media (max-width: 900px) {
+
+  #projects .featured-project {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  #projects .mamacare-showcase {
+    justify-self: start;
+    max-width: 360px;
+  }
+
+}
+
+@media (max-width: 580px) {
+
+  #projects .featured-project {
+    padding: 1.5rem;
+  }
+
+  #projects .mamacare-showcase {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #projects .mamacare-slides {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+}
+
+/* MamaCare feature tags */
+.featured-project-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1.5rem 0 1.8rem;
+  max-width: 680px;
+}
+
+.featured-feature {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(196, 104, 138, 0.35);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.featured-feature:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  transform: translateY(-2px);
 }

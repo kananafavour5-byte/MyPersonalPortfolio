@@ -409,31 +409,114 @@ document.querySelectorAll('.preview-btn').forEach((btn) => {
 
 /* ─────────────────────────────────────
    DARK / LIGHT MODE
+   Dark mode is the default.
+   Light mode only activates when the
+   visitor deliberately clicks the button.
 ───────────────────────────────────── */
 
 const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle.querySelector('.theme-icon');
 
-// Load saved theme
-const savedTheme = localStorage.getItem('theme');
+// Always start in dark mode
+document.body.classList.remove('light-theme');
+themeIcon.textContent = '☼';
+themeToggle.title = 'Switch to light mode';
+themeToggle.setAttribute('aria-label', 'Switch to light mode');
 
-if (savedTheme === 'light') {
-  document.body.classList.add('light-theme');
-  themeToggle.textContent = '☀️';
-} else {
-  themeToggle.textContent = '🌙';
-}
-
-// Toggle theme
+// Toggle only when the visitor deliberately clicks
 themeToggle.addEventListener('click', () => {
+  const isLight = document.body.classList.toggle('light-theme');
 
-  document.body.classList.toggle('light-theme');
-
-  if (document.body.classList.contains('light-theme')) {
-    themeToggle.textContent = '☀️';
-    localStorage.setItem('theme', 'light');
+  if (isLight) {
+    themeIcon.textContent = '☾';
+    themeToggle.title = 'Switch to dark mode';
+    themeToggle.setAttribute('aria-label', 'Switch to dark mode');
   } else {
-    themeToggle.textContent = '🌙';
-    localStorage.setItem('theme', 'dark');
+    themeIcon.textContent = '☼';
+    themeToggle.title = 'Switch to light mode';
+    themeToggle.setAttribute('aria-label', 'Switch to light mode');
+  }
+});
+
+// ─────────────────────────────────────────────
+// MamaCare presentation slider
+// ─────────────────────────────────────────────
+
+const mamacareSlides = document.querySelectorAll('.mamacare-slide');
+const mamacareDots = document.querySelectorAll('.mamacare-dot');
+const mamacareSlider = document.querySelector('.mamacare-slides');
+
+let mamacareCurrentSlide = 0;
+
+function showMamaCareSlide(index) {
+  if (!mamacareSlides.length) return;
+
+  // Keep index within the available slides
+  if (index < 0) {
+    index = mamacareSlides.length - 1;
   }
 
+  if (index >= mamacareSlides.length) {
+    index = 0;
+  }
+
+  mamacareCurrentSlide = index;
+
+  // Update slides
+  mamacareSlides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+
+  // Update dots
+  mamacareDots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+}
+
+
+// ── Dot navigation ──
+
+mamacareDots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    showMamaCareSlide(index);
+  });
 });
+
+
+// ── Mobile swipe navigation ──
+
+let mamacareTouchStartX = 0;
+let mamacareTouchEndX = 0;
+
+if (mamacareSlider) {
+
+  mamacareSlider.addEventListener('touchstart', (event) => {
+    mamacareTouchStartX = event.changedTouches[0].screenX;
+  }, { passive: true });
+
+
+  mamacareSlider.addEventListener('touchend', (event) => {
+    mamacareTouchEndX = event.changedTouches[0].screenX;
+
+    const swipeDistance =
+      mamacareTouchEndX - mamacareTouchStartX;
+
+    // Minimum swipe distance so small touches don't change slides
+    const minimumSwipe = 50;
+
+    if (Math.abs(swipeDistance) < minimumSwipe) {
+      return;
+    }
+
+    // Swipe left → next slide
+    if (swipeDistance < 0) {
+      showMamaCareSlide(mamacareCurrentSlide + 1);
+    }
+
+    // Swipe right → previous slide
+    if (swipeDistance > 0) {
+      showMamaCareSlide(mamacareCurrentSlide - 1);
+    }
+  }, { passive: true });
+
+}
