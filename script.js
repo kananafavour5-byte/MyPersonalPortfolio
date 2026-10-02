@@ -1,522 +1,292 @@
-/* ═══════════════════════════════════════════════════════════
-   FAVOUR KIREMA — PORTFOLIO JAVASCRIPT
-   -------------------------------------------------------
-   Handles:
-   1. Custom magnetic cursor
-   2. Mobile navigation toggle
-   3. Scroll-reveal animations (IntersectionObserver)
-   4. Animated skill bars (triggered on scroll)
-   5. Active nav link highlighting on scroll
-   6. Contact form validation + feedback
-═══════════════════════════════════════════════════════════ */
+/* Small static-site controller: addressable views, native dialogs and progressive interactions. */
+(() => {
+  'use strict';
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-/* ─────────────────────────────────────────────────────────
-   1. CUSTOM CURSOR
-   Two-part cursor: a small solid dot that tracks the mouse
-   exactly, and a larger ring that follows with a slight lag
-   for a fluid "magnetic" feel.
-───────────────────────────────────────────────────────── */
-
-const cursor    = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursorRing');
-
-// Current mouse position
-let mouseX = 0;
-let mouseY = 0;
-
-// Ring lags behind the real cursor position
-let ringX = 0;
-let ringY = 0;
-
-// Update the dot instantly on every mouse move
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top  = mouseY + 'px';
-});
-
-// Animate the ring with lerp (linear interpolation) so it
-// smoothly chases the cursor rather than snapping to it
-function animateRing() {
-  // Pull ring position 12% of the way toward the cursor each frame
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top  = ringY + 'px';
-
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-// Scale up cursor when hovering interactive elements
-const interactiveSelectors = 'a, button, .project-card, .service-card, .tag, .tech-tag';
-
-document.querySelectorAll(interactiveSelectors).forEach((el) => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.transform   = 'translate(-50%, -50%) scale(2.5)';
-    cursor.style.background  = 'var(--plum-light)';
-    cursorRing.style.width   = '52px';
-    cursorRing.style.height  = '52px';
-    cursorRing.style.borderColor = 'rgba(155, 111, 212, 0.6)';
-  });
-
-  el.addEventListener('mouseleave', () => {
-    cursor.style.transform   = 'translate(-50%, -50%) scale(1)';
-    cursor.style.background  = 'var(--rose)';
-    cursorRing.style.width   = '36px';
-    cursorRing.style.height  = '36px';
-    cursorRing.style.borderColor = 'rgba(196, 104, 138, 0.5)';
-  });
-});
-
-
-/* ─────────────────────────────────────────────────────────
-   2. MOBILE NAVIGATION TOGGLE
-   Adds / removes .open class on the nav links list when the
-   hamburger button is clicked. Also closes the menu when
-   any nav link is tapped (smooth UX on mobile).
-───────────────────────────────────────────────────────── */
-
-const navToggle = document.getElementById('navToggle');
-const navLinks  = document.getElementById('navLinks');
-
-navToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-});
-
-// Close mobile menu when a link is clicked
-document.querySelectorAll('.nav-links a').forEach((link) => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-  });
-});
-
-
-/* ─────────────────────────────────────────────────────────
-   3. SCROLL-REVEAL ANIMATIONS
-   Uses IntersectionObserver to watch every element with
-   class .reveal. When the element enters the viewport by
-   at least 15%, .visible is added and CSS transitions
-   fade it up into place.
-───────────────────────────────────────────────────────── */
-
-// Initialise all skill-fill bars to 0 width before any
-// reveal so they animate in correctly when they scroll in
-document.querySelectorAll('.skill-fill').forEach((bar) => {
-  bar.style.width = '0%';
-});
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-
-      // Trigger the CSS fade-up transition
-      entry.target.classList.add('visible');
-
-      // If this element (or any child) contains a skill bar,
-      // animate it to its target width with a staggered delay
-      entry.target.querySelectorAll('.skill-fill').forEach((bar, index) => {
-        const targetWidth = (parseFloat(bar.dataset.width) * 100) + '%';
-
-        setTimeout(() => {
-          bar.style.width = targetWidth;
-        }, index * 150); // each bar starts 150 ms after the previous
-      });
-
-      // Once revealed, stop observing this element
-      revealObserver.unobserve(entry.target);
+  // A keyboard-accessible project gallery; all projects remain readable without JS.
+  const projectTabs = $$('[data-project]');
+  const projectPanels = $$('.project-panel');
+  function selectProject(id, focus = false) {
+    projectTabs.forEach(tab => {
+      const selected = tab.dataset.project === id;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      if (selected && focus) tab.focus();
     });
-  },
-  { threshold: 0.15 } // trigger when 15% of element is visible
-);
+    projectPanels.forEach(panel => {
+      panel.hidden = panel.id !== id;
+      panel.classList.toggle('panel-enter', panel.id === id);
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', 'project-tab-' + panel.id);
+      panel.tabIndex = 0;
+    });
+  }
+  projectTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectProject(tab.dataset.project));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (index + 1) % projectTabs.length;
+      if (event.key === 'ArrowLeft') next = (index - 1 + projectTabs.length) % projectTabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = projectTabs.length - 1;
+      if (next === undefined) return;
+      event.preventDefault();
+      selectProject(projectTabs[next].dataset.project, true);
+    });
+  });
+  if (projectTabs.length) selectProject(projectTabs[0].dataset.project);
 
-// Observe every element marked for reveal
-document.querySelectorAll('.reveal').forEach((el) => {
-  revealObserver.observe(el);
-});
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const views = $$('section[data-view]');
+  const viewNames = views.map(view => view.dataset.view);
+  const aliases = { experience: 'journal', services: 'skills' };
+  const menu = $('#exploreMenu');
+  const trigger = $('#exploreTrigger');
+  const imageViewer = $('#imageViewer');
+  let activeView = 'home';
+  let closeTimer;
+  let paused = false;
 
-
-/* ─────────────────────────────────────────────────────────
-   4. ACTIVE NAV LINK ON SCROLL
-   Highlights the nav link corresponding to whichever section
-   is currently in view. Checks section positions on every
-   scroll event and updates the colour of matching link.
-───────────────────────────────────────────────────────── */
-
-const sectionIds  = ['home', 'about', 'projects', 'experience', 'services', 'contact'];
-const navLinkEls  = document.querySelectorAll('.nav-links a');
-
-function updateActiveNav() {
-  let currentSection = '';
-
-  sectionIds.forEach((id) => {
-    const section = document.getElementById(id);
-    if (!section) return;
-
-    const rect = section.getBoundingClientRect();
-    // Section is "active" when its top is above the middle of the viewport
-    if (rect.top < window.innerHeight * 0.4) {
-      currentSection = id;
+  function lockDialogs() {
+    document.body.classList.toggle('modal-open', !!$('dialog[open]'));
+  }
+  function closeMenu(immediate = false) {
+    clearTimeout(closeTimer);
+    trigger.setAttribute('aria-expanded', 'false');
+    if (!menu.open) return;
+    const finish = () => {
+      menu.close();
+      menu.classList.remove('closing');
+      lockDialogs();
+    };
+    if (immediate || reducedMotion.matches) finish();
+    else {
+      menu.classList.add('closing');
+      closeTimer = setTimeout(finish, 180);
     }
-  });
-
-  navLinkEls.forEach((link) => {
-    const isActive = link.getAttribute('href') === '#' + currentSection;
-    link.style.color = isActive ? 'var(--rose)' : '';
-  });
-}
-
-window.addEventListener('scroll', updateActiveNav, { passive: true });
-// Run once on load so the first section is already highlighted
-updateActiveNav();
-
-
-/* ─────────────────────────────────────────────────────────
-   5. CONTACT FORM — VALIDATION & FEEDBACK
-   Simple client-side validation. Shows an inline success
-   or error message without a page reload.
-   Note: to actually send emails you'd hook this up to a
-   backend or a service like EmailJS / Formspree.
-───────────────────────────────────────────────────────── */
-
-const sendBtn  = document.getElementById('sendBtn');
-const formNote = document.getElementById('formNote');
-
-// Helper: read a form field's trimmed value
-function fieldValue(id) {
-  return document.getElementById(id).value.trim();
-}
-
-// Basic email format check
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// Clear all form fields
-function clearForm() {
-  ['name', 'email', 'subject', 'message'].forEach((id) => {
-    document.getElementById(id).value = '';
-  });
-}
-
-sendBtn.addEventListener('click', () => {
-  const name    = fieldValue('name');
-  const email   = fieldValue('email');
-  const subject = fieldValue('subject');
-  const message = fieldValue('message');
-
-  // Validation
-  if (!name || !email || !subject || !message) {
-    formNote.style.color = 'var(--rose)';
-    formNote.textContent = '✗ Please fill in all fields before sending.';
-    return;
   }
-
-  if (!isValidEmail(email)) {
-    formNote.style.color = 'var(--rose)';
-    formNote.textContent = '✗ Please enter a valid email address.';
-    return;
-  }
-
-  // Show sending state
-  sendBtn.disabled = true;
-  sendBtn.querySelector('span').textContent = 'Sending...';
-  formNote.textContent = '';
-
-  // Send via EmailJS
-emailjs.send(
-  'service_u26li78',
-  'template_cnpz2ur',
-{
-  name: name,
-  email: email,
-  subject: subject,
-  message: message,
-}
-  )
-  .then(() => {
-    // Success
-    formNote.style.color = 'var(--cyan)';
-    formNote.textContent = '✓ Message sent! I\'ll be in touch soon.';
-    sendBtn.querySelector('span').textContent = 'Send Message ✦';
-    sendBtn.disabled = false;
-    clearForm();
-    setTimeout(() => { formNote.textContent = ''; }, 6000);
-  })
-  .catch((error) => {
-    // Error
-    formNote.style.color = 'var(--rose)';
-    formNote.textContent = '✗ Something went wrong. Please email me directly.';
-    sendBtn.querySelector('span').textContent = 'Send Message ✦';
-    sendBtn.disabled = false;
-    console.error('EmailJS error:', error);
+  trigger.addEventListener('click', () => {
+    if (menu.open) return closeMenu();
+    clearTimeout(closeTimer);
+    menu.classList.remove('closing');
+    menu.showModal();
+    trigger.setAttribute('aria-expanded', 'true');
+    lockDialogs();
   });
-});
- 
+  $('#closeMenu').addEventListener('click', () => closeMenu());
+  menu.addEventListener('cancel', event => { event.preventDefault(); closeMenu(); });
+  menu.addEventListener('close', () => { trigger.setAttribute('aria-expanded', 'false'); lockDialogs(); });
 
-/* ─────────────────────────────────────────────────────────
-   6. SMOOTH SECTION TRANSITIONS (optional enhancement)
-   Adds a tiny stagger delay to reveal children inside a
-   .projects-grid or .services-grid when the grid itself
-   becomes visible, making cards appear one by one.
-───────────────────────────────────────────────────────── */
-
-const gridObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-
-      const cards = entry.target.querySelectorAll(
-        '.project-card, .service-card'
-      );
-
-      cards.forEach((card, i) => {
-        setTimeout(() => {
-          card.style.opacity   = '1';
-          card.style.transform = 'translateY(0)';
-        }, i * 80); // 80 ms stagger per card
-      });
-
-      gridObserver.unobserve(entry.target);
+  // Native dialog supplies Escape, focus containment and return-to-opener behavior.
+  [menu, imageViewer].forEach(dialog => {
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+        if (dialog === menu) closeMenu();
+        else dialog.close();
+      }
     });
-  },
-  { threshold: 0.05 }
-);
-
-// Prepare grid cards to be staggered in
-document.querySelectorAll('.projects-grid, .services-grid').forEach((grid) => {
-  grid.querySelectorAll('.project-card, .service-card').forEach((card) => {
-    card.style.opacity   = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   });
-  gridObserver.observe(grid);
-});
 
+  function route(focus = true) {
+    const raw = location.hash.slice(1).split('/')[0];
+    const requested = aliases[raw] || raw || 'home';
+    const next = viewNames.includes(requested) ? requested : 'home';
+    closeMenu(true);
+    if (imageViewer.open) imageViewer.close();
+    activeView = next;
+    document.body.dataset.view = next;
+    views.forEach(view => {
+      const visible = view.dataset.view === next;
+      view.hidden = !visible;
+      view.classList.toggle('view-enter', visible && next !== 'home');
+    });
+    $$('nav a[href^="#"]').forEach(link => {
+      if (link.getAttribute('href') === '#' + next) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    document.title = next === 'home' ? 'Favour Kirema — Software Developer' : `${next[0].toUpperCase() + next.slice(1)} — Favour Kirema`;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (focus) $(`#${next}-title`).focus({ preventScroll: true });
+  }
+  window.addEventListener('hashchange', () => route());
+  $$('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+    const hash = link.getAttribute('href');
+    if (hash === '#main-content') {
+      event.preventDefault();
+      $(`#${activeView}-title`).focus({ preventScroll: true });
+    } else if (hash === location.hash || (hash === '#home' && !location.hash)) {
+      event.preventDefault();
+      route();
+    }
+  }));
+  route(false);
 
-/* ─────────────────────────────────────────────────────────
-   PROJECT PREVIEW MODAL
-   Opens an iframe preview when "Live Preview" is clicked.
-   Falls back gracefully if the site blocks iframes (X-Frame-Options).
-───────────────────────────────────────────────────────── */
+  // Manual gallery: owner-supplied MamaCare product screenshots.
+  const slides = [
+    { name: 'home', alt: 'MamaCare Kenya homepage — maternal and newborn support' },
+    { name: 'journey', alt: 'MamaCare Kenya Journey — stage-based baby-care guidance' },
+    { name: 'learn', alt: 'MamaCare Kenya Learn — practical newborn and postpartum education' }
+  ].map(slide => ({
+    src: `images/mamacare-${slide.name}.webp`,
+    original: `images/mamacare-${slide.name}.png`,
+    alt: slide.alt
+  }));
+  const galleryButton = $('.gallery-image-button');
+  let currentSlide = 0;
+  function showSlide(index) {
+    currentSlide = (index + slides.length) % slides.length;
+    const slide = slides[currentSlide];
+    $('#mamacareImage').src = slide.src;
+    $('#mamacareImage').alt = slide.alt;
+    galleryButton.dataset.image = slide.original;
+    galleryButton.dataset.caption = slide.alt;
+    $('#slideStatus').textContent = `0${currentSlide + 1} / 03`;
+    $$('[data-slide]').forEach((button, i) => button.setAttribute('aria-pressed', String(i === currentSlide)));
+  }
+  $$('[data-slide]').forEach(button => button.addEventListener('click', () => showSlide(Number(button.dataset.slide))));
+  $('.project-gallery').addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    showSlide(currentSlide + (event.key === 'ArrowRight' ? 1 : -1));
+    $(`[data-slide="${currentSlide}"]`).focus();
+  });
+  let touchStart;
+  galleryButton.addEventListener('touchstart', event => {
+    touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+  }, { passive: true });
+  let swipedAt = 0;
+  galleryButton.addEventListener('touchend', event => {
+    if (!touchStart) return;
+    const x = event.changedTouches[0].clientX - touchStart.x;
+    const y = event.changedTouches[0].clientY - touchStart.y;
+    if (Math.abs(x) > 50 && Math.abs(x) > Math.abs(y)) {
+      showSlide(currentSlide + (x < 0 ? 1 : -1));
+      swipedAt = Date.now();
+    }
+    touchStart = null;
+  }, { passive: true });
+  $$('[data-image]').forEach(button => button.addEventListener('click', () => {
+    if (button === galleryButton && Date.now() - swipedAt < 400) return;
+    $('#viewerTitle').textContent = button.dataset.caption;
+    $('#viewerImage').src = button.dataset.image;
+    $('#viewerImage').alt = button.dataset.caption;
+    imageViewer.showModal();
+    lockDialogs();
+  }));
+  $('#closeViewer').addEventListener('click', () => imageViewer.close());
+  imageViewer.addEventListener('close', lockDialogs);
 
-const modalOverlay = document.getElementById('modalOverlay');
-const modalIframe  = document.getElementById('modalIframe');
-const modalTitle   = document.getElementById('modalTitle');
-const modalLabel   = document.getElementById('modalLabel');
-const modalExternal = document.getElementById('modalExternal');
-const modalLoading = document.getElementById('modalLoading');
-const modalClose   = document.getElementById('modalClose');
+  // Atmospheric motion is optional, never required to operate the site.
+  const motionButton = $('#motionToggle');
+  try { paused = localStorage.getItem('favour-motion-paused') === 'true'; } catch (_) { /* Storage may be unavailable. */ }
+  function updateMotion() {
+    document.body.classList.toggle('motion-paused', paused || reducedMotion.matches);
+    motionButton.setAttribute('aria-pressed', String(paused));
+    $('span', motionButton).textContent = paused ? 'Play motion' : 'Pause motion';
+    $('img', motionButton).src = paused ? 'icons/play.svg' : 'icons/pause.svg';
+  }
+  motionButton.addEventListener('click', () => {
+    paused = !paused;
+    try { localStorage.setItem('favour-motion-paused', String(paused)); } catch (_) { /* No persistence needed. */ }
+    updateMotion();
+  });
+  reducedMotion.addEventListener('change', updateMotion);
+  updateMotion();
+  const world = $('.world');
+  let pointerFrame = 0;
+  $('#home').addEventListener('pointermove', event => {
+    if (reducedMotion.matches || paused || !finePointer.matches || activeView !== 'home') return;
+    if (pointerFrame) return;
+    pointerFrame = requestAnimationFrame(() => {
+      world.style.setProperty('--scene-x', `${(event.clientX / innerWidth - .5) * -7}px`);
+      world.style.setProperty('--scene-y', `${(event.clientY / innerHeight - .5) * -5}px`);
+      pointerFrame = 0;
+    });
+  });
+  $('#home').addEventListener('pointerleave', () => {
+    world.style.setProperty('--scene-x', '0px');
+    world.style.setProperty('--scene-y', '0px');
+  });
+  $$('.magnetic').forEach(button => {
+    button.addEventListener('pointermove', event => {
+      if (paused || reducedMotion.matches || !finePointer.matches) return;
+      const rect = button.getBoundingClientRect();
+      const x = Math.max(-3, Math.min(3, (event.clientX - rect.left - rect.width / 2) * .05));
+      const y = Math.max(-3, Math.min(3, (event.clientY - rect.top - rect.height / 2) * .08));
+      button.style.transform = `translate(${x}px, ${y - 1}px)`;
+    });
+    button.addEventListener('pointerleave', () => button.style.removeProperty('transform'));
+    button.addEventListener('blur', () => button.style.removeProperty('transform'));
+  });
 
-// Open modal with the project's URL and title
-function openModal(url, title) {
-  modalTitle.textContent    = title;
-  modalLabel.textContent    = 'Live Preview';
-  modalExternal.href        = url;
-  modalLoading.classList.remove('hidden');
-
-  // Remove any old blocked message
-  const old = modalIframe.parentNode.querySelector('.modal-blocked');
-  if (old) old.remove();
-
-  // Load the URL in the iframe
-  modalIframe.src = url;
-
-  // Show the modal
-  modalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden'; // prevent background scroll
-
-  // Hide the loading dots once the iframe finishes loading
-  modalIframe.onload = () => {
-    modalLoading.classList.add('hidden');
-  };
-
-  // Some sites (GitHub, some Vercel apps) block iframes via X-Frame-Options.
-  // We can't detect this directly in JS, so we show a fallback after a timeout
-  // if the iframe appears to still be blank after 8 seconds.
-  setTimeout(() => {
+  // Keep the original EmailJS destination, but load it only for a valid submission.
+  let emailClientPromise;
+  function loadEmailClient() {
+    if (window.emailjs) return Promise.resolve(window.emailjs);
+    if (emailClientPromise) return emailClientPromise;
+    emailClientPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+      script.async = true;
+      const timer = setTimeout(() => reject(new Error('The email service did not load.')), 10000);
+      script.onload = () => { clearTimeout(timer); window.emailjs ? resolve(window.emailjs) : reject(new Error('Email service unavailable.')); };
+      script.onerror = () => { clearTimeout(timer); reject(new Error('Email service unavailable.')); };
+      document.head.appendChild(script);
+    }).catch(error => { emailClientPromise = null; throw error; });
+    return emailClientPromise;
+  }
+  const form = $('#contactForm');
+  const fields = ['name', 'email', 'subject', 'message'].map(id => $('#' + id));
+  const note = $('#formNote');
+  fields.forEach(field => field.addEventListener('input', () => {
+    field.removeAttribute('aria-invalid');
+    $('#' + field.id + 'Error').textContent = '';
+  }));
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const invalid = [];
+    fields.forEach(field => {
+      let error = '';
+      if (!field.value.trim()) error = 'Please fill in this field.';
+      else if (field.type === 'email' && !field.validity.valid) error = 'Please enter a valid email address.';
+      $('#' + field.id + 'Error').textContent = error;
+      if (error) { field.setAttribute('aria-invalid', 'true'); invalid.push(field); }
+      else field.removeAttribute('aria-invalid');
+    });
+    if (invalid.length) {
+      note.textContent = 'Please check the highlighted fields before sending.';
+      invalid[0].focus();
+      return;
+    }
+    const sendButton = $('#sendBtn');
+    if (sendButton.disabled) return;
+    sendButton.disabled = true;
+    $('span', sendButton).textContent = 'Sending…';
+    note.textContent = '';
+    form.setAttribute('aria-busy', 'true');
     try {
-      // If iframe loaded same-origin content, contentDocument is accessible
-      // For cross-origin blocked pages, we catch the error and show fallback
-      const doc = modalIframe.contentDocument;
-      if (!doc || doc.body.innerHTML === '') showBlockedMessage(url);
-    } catch (e) {
-      // Cross-origin but not necessarily blocked — this is normal, do nothing
+      const client = await loadEmailClient();
+      client.init({ publicKey: 'Iyaj4VIJbr0oBPmEO' });
+      const values = Object.fromEntries(fields.map(field => [field.id, field.value.trim()]));
+      let timeout;
+      try {
+        await Promise.race([
+          client.send('service_u26li78', 'template_cnpz2ur', values),
+          new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error('Delivery could not be confirmed.')), 20000); })
+        ]);
+      } finally { clearTimeout(timeout); }
+      note.textContent = "Message sent! I'll be in touch soon.";
+      form.reset();
+    } catch (_) {
+      note.textContent = 'Delivery could not be confirmed. Your message is still here; please email kananafavour5@gmail.com directly.';
+    } finally {
+      sendButton.disabled = false;
+      $('span', sendButton).textContent = 'Send Message';
+      form.removeAttribute('aria-busy');
     }
-  }, 8000);
-}
-
-// Show a fallback message when the site blocks iframes
-function showBlockedMessage(url) {
-  modalLoading.classList.add('hidden');
-
-  const blocked = document.createElement('div');
-  blocked.className = 'modal-blocked visible';
-  blocked.innerHTML = `
-    <p style="font-size:2rem">🔒</p>
-    <p>This site doesn't allow embedded previews.<br/>
-    You can still view it directly.</p>
-    <a href="${url}" target="_blank">Open project in new tab ↗</a>
-  `;
-  modalIframe.parentNode.appendChild(blocked);
-}
-
-// Close modal
-function closeModal() {
-  modalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-  // Small delay before clearing src so the close animation plays first
-  setTimeout(() => { modalIframe.src = ''; }, 300);
-}
-
-// Close button
-modalClose.addEventListener('click', closeModal);
-
-// Click outside the modal box to close
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeModal();
-});
-
-// Press Escape to close
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
-// Hook up all "Live Preview" buttons on project cards
-document.querySelectorAll('.preview-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.project-card');
-    const url = card.dataset.url;
-    const title = card.dataset.title;
-
-    if (!url || url === '#') {
-      alert('No live URL added yet for this project.');
-      return;
-    }
-
-    if (url.includes('faxel-interiors.vercel.app')) {
-      window.open(url, '_blank');
-      return;
-    }
-
-    openModal(url, title);
   });
-});
-
-/* ─────────────────────────────────────
-   DARK / LIGHT MODE
-   Dark mode is the default.
-   Light mode only activates when the
-   visitor deliberately clicks the button.
-───────────────────────────────────── */
-
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = themeToggle.querySelector('.theme-icon');
-
-// Always start in dark mode
-document.body.classList.remove('light-theme');
-themeIcon.textContent = '☼';
-themeToggle.title = 'Switch to light mode';
-themeToggle.setAttribute('aria-label', 'Switch to light mode');
-
-// Toggle only when the visitor deliberately clicks
-themeToggle.addEventListener('click', () => {
-  const isLight = document.body.classList.toggle('light-theme');
-
-  if (isLight) {
-    themeIcon.textContent = '☾';
-    themeToggle.title = 'Switch to dark mode';
-    themeToggle.setAttribute('aria-label', 'Switch to dark mode');
-  } else {
-    themeIcon.textContent = '☼';
-    themeToggle.title = 'Switch to light mode';
-    themeToggle.setAttribute('aria-label', 'Switch to light mode');
-  }
-});
-
-// ─────────────────────────────────────────────
-// MamaCare presentation slider
-// ─────────────────────────────────────────────
-
-const mamacareSlides = document.querySelectorAll('.mamacare-slide');
-const mamacareDots = document.querySelectorAll('.mamacare-dot');
-const mamacareSlider = document.querySelector('.mamacare-slides');
-
-let mamacareCurrentSlide = 0;
-
-function showMamaCareSlide(index) {
-  if (!mamacareSlides.length) return;
-
-  // Keep index within the available slides
-  if (index < 0) {
-    index = mamacareSlides.length - 1;
-  }
-
-  if (index >= mamacareSlides.length) {
-    index = 0;
-  }
-
-  mamacareCurrentSlide = index;
-
-  // Update slides
-  mamacareSlides.forEach((slide, i) => {
-    slide.classList.toggle('active', i === index);
-  });
-
-  // Update dots
-  mamacareDots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === index);
-  });
-}
-
-
-// ── Dot navigation ──
-
-mamacareDots.forEach((dot, index) => {
-  dot.addEventListener('click', () => {
-    showMamaCareSlide(index);
-  });
-});
-
-
-// ── Mobile swipe navigation ──
-
-let mamacareTouchStartX = 0;
-let mamacareTouchEndX = 0;
-
-if (mamacareSlider) {
-
-  mamacareSlider.addEventListener('touchstart', (event) => {
-    mamacareTouchStartX = event.changedTouches[0].screenX;
-  }, { passive: true });
-
-
-  mamacareSlider.addEventListener('touchend', (event) => {
-    mamacareTouchEndX = event.changedTouches[0].screenX;
-
-    const swipeDistance =
-      mamacareTouchEndX - mamacareTouchStartX;
-
-    // Minimum swipe distance so small touches don't change slides
-    const minimumSwipe = 50;
-
-    if (Math.abs(swipeDistance) < minimumSwipe) {
-      return;
-    }
-
-    // Swipe left → next slide
-    if (swipeDistance < 0) {
-      showMamaCareSlide(mamacareCurrentSlide + 1);
-    }
-
-    // Swipe right → previous slide
-    if (swipeDistance > 0) {
-      showMamaCareSlide(mamacareCurrentSlide - 1);
-    }
-  }, { passive: true });
-
-}
+})();
