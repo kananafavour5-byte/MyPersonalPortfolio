@@ -4,39 +4,6 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  // A keyboard-accessible project gallery; all projects remain readable without JS.
-  const projectTabs = $$('[data-project]');
-  const projectPanels = $$('.project-panel');
-  function selectProject(id, focus = false) {
-    projectTabs.forEach(tab => {
-      const selected = tab.dataset.project === id;
-      tab.setAttribute('aria-selected', String(selected));
-      tab.tabIndex = selected ? 0 : -1;
-      if (selected && focus) tab.focus();
-    });
-    projectPanels.forEach(panel => {
-      panel.hidden = panel.id !== id;
-      panel.classList.toggle('panel-enter', panel.id === id);
-      panel.setAttribute('role', 'tabpanel');
-      panel.setAttribute('aria-labelledby', 'project-tab-' + panel.id);
-      panel.tabIndex = 0;
-    });
-  }
-  projectTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => selectProject(tab.dataset.project));
-    tab.addEventListener('keydown', event => {
-      let next;
-      if (event.key === 'ArrowRight') next = (index + 1) % projectTabs.length;
-      if (event.key === 'ArrowLeft') next = (index - 1 + projectTabs.length) % projectTabs.length;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = projectTabs.length - 1;
-      if (next === undefined) return;
-      event.preventDefault();
-      selectProject(projectTabs[next].dataset.project, true);
-    });
-  });
-  if (projectTabs.length) selectProject(projectTabs[0].dataset.project);
-
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
   const views = $$('section[data-view]');

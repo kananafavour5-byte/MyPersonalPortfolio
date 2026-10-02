@@ -2364,16 +2364,6 @@ body:not([data-view="home"]) .header-contact {background:#572039;color:#fff3f5;b
 .inner-view .project-copy .tech-list {margin:22px 0}
 .inner-view .project-copy .tech-list li {background:rgba(255,255,255,.35);padding:5px 14px}
 .inner-view .project-panel .image-action {right:38px;bottom:38px}
-.project-selector {display:none}
-.js .project-selector {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:38px;padding:25px 15px;border-radius:18px;background:linear-gradient(115deg,#5c3b51,#725268);box-shadow:0 14px 35px rgba(112,54,89,.16);backdrop-filter:blur(20px)}
-.project-selector button {position:relative;text-align:left;color:#f6e8ee;background:transparent;border:0;border-right:1px solid rgba(247,217,232,.25);padding:8px 24px;min-height:65px;transition:background .25s,color .25s}
-.project-selector button:last-child {border-right:0}
-.project-selector button span {display:block;font-size:10px;letter-spacing:.18em;color:#d6b5c7;margin-bottom:8px}
-.project-selector button strong {font:400 clamp(20px,2vw,28px)/1.2 'Instrument Serif',Georgia,serif;display:block}
-.project-selector button[aria-selected="true"] {color:white}
-.project-selector button[aria-selected="true"]::after {content:"";position:absolute;bottom:-8px;left:24px;width:70px;height:2px;background:#f5bdd6;box-shadow:0 0 8px #e9adc9}
-.project-selector button:hover {background:rgba(255,224,238,.08)}
-.project-selector button:focus-visible {outline:2px solid #ffdaeb;outline-offset:3px;border-radius:4px}
 .inner-view .project-panel.panel-enter {animation:inner-arrive .45s both}
 .inner-view .profile-panel {background:linear-gradient(140deg,rgba(247,212,224,.65),rgba(255,255,255,.55))}
 .inner-view .skill-groups {background:rgba(255,255,255,.52)}
@@ -2390,11 +2380,6 @@ body:not([data-view="home"]) .header-contact {background:#572039;color:#fff3f5;b
  .inner-view .project-panel .project-copy {grid-column:1;grid-row:2}
  .inner-view .project-panel .project-media,.inner-view .project-panel .project-gallery {grid-column:1;grid-row:1;padding:16px;border-radius:18px}
  .inner-view .project-copy h2 {font-size:48px}
- .js .project-selector {grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 0;padding:18px 10px}
- .project-selector button:nth-child(even) {border-right:0}
- .project-selector button:last-child:nth-child(odd) {grid-column:1 / -1}
- .project-selector button {padding:8px 15px}
- .project-selector button[aria-selected="true"]::after {left:15px;bottom:0}
  .projects-view .split-heading {align-items:flex-start;flex-direction:column;gap:20px}
  .inner-view .project-panel .image-action {right:25px;bottom:25px}
 }
@@ -2403,8 +2388,6 @@ body:not([data-view="home"]) .header-contact {background:#572039;color:#fff3f5;b
  .inner-view.projects-view {padding-top:calc(var(--header) + 35px)}
  .projects-view .page-heading h1 {font-size:58px}
  .inner-view .project-panel .project-media,.inner-view .project-panel .project-gallery {padding:12px}
- .project-selector button strong {font-size:21px}
- .project-selector button {min-height:76px}
 }
 @media(prefers-reduced-motion:reduce) {.inner-view .project-panel.panel-enter {animation:none}}
 
@@ -2431,3 +2414,12 @@ body:not([data-view="home"]) .header-contact {background:#572039;color:#fff3f5;b
 .about-view .language-list strong {font-weight:600;color:#60384e}
 .about-view .language-list span {font-size:12px;color:#72596b}
 @media(max-width:820px) {.inner-view.about-view .about-copy {grid-row:auto}.about-view .profile-panel {width:100%}.about-portrait {max-width:270px}.about-view .education-section {margin-top:32px}}
+
+/* Each project is a separate stop in the vertical showcase. */
+.inner-view.projects-view .project-panel {padding:60px 0 80px;min-height:70svh;scroll-margin-top:100px}
+.inner-view.projects-view .project-panel + .project-panel {border-top:1px solid #dfc5d1;padding-top:90px}
+.inner-view.projects-view .page-heading {margin-bottom:0}
+@media(max-width:820px) {
+ .inner-view.projects-view .project-panel {min-height:0;padding:38px 0 52px}
+ .inner-view.projects-view .project-panel + .project-panel {padding-top:52px}
+}
